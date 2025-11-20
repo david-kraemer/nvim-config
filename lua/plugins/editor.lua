@@ -60,6 +60,30 @@ return {
           },
         },
       })
+
+      -- Auto-close nvim-tree if it's the last window
+      -- Prevents the need for double :q when only the tree remains
+      vim.api.nvim_create_autocmd('QuitPre', {
+        callback = function()
+          local tree_wins = {}
+          local floating_wins = {}
+          local wins = vim.api.nvim_list_wins()
+          for _, w in ipairs(wins) do
+            local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
+            if bufname:match('NvimTree_') ~= nil then
+              table.insert(tree_wins, w)
+            end
+            if vim.api.nvim_win_get_config(w).relative ~= '' then
+              table.insert(floating_wins, w)
+            end
+          end
+          if #wins - #floating_wins - #tree_wins == 1 then
+            for _, w in ipairs(tree_wins) do
+              vim.api.nvim_win_close(w, true)
+            end
+          end
+        end,
+      })
     end,
   },
 
@@ -120,12 +144,6 @@ return {
         end,
         desc = '[S]earch [N]eovim files',
       },
-      -- Git pickers (consolidated from git.lua)
-      { '<leader>gf', '<cmd>Telescope git_files<cr>', desc = '[G]it [F]iles' },
-      { '<leader>gc', '<cmd>Telescope git_commits<cr>', desc = '[G]it [C]ommits' },
-      { '<leader>gb', '<cmd>Telescope git_branches<cr>', desc = '[G]it [B]ranches' },
-      { '<leader>gs', '<cmd>Telescope git_status<cr>', desc = '[G]it [S]tatus' },
-      { '<leader>gx', '<cmd>Telescope git_bcommits<cr>', desc = '[G]it Buffer Commits' },
     },
     config = function()
       require('telescope').setup({
@@ -265,5 +283,51 @@ return {
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = true },
+  },
+
+  -- ============================================================================
+  -- Markdown Live Preview
+  -- ============================================================================
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+    keys = {
+      { '<leader>mp', '<cmd>MarkdownPreviewToggle<CR>', desc = '[M]arkdown [P]review', ft = 'markdown' },
+    },
+    config = function()
+      vim.g.mkdp_auto_start = 0
+      vim.g.mkdp_auto_close = 1
+      vim.g.mkdp_refresh_slow = 0
+      vim.g.mkdp_command_for_global = 0
+      vim.g.mkdp_open_to_the_world = 0
+      vim.g.mkdp_open_ip = ''
+      vim.g.mkdp_browser = ''
+      vim.g.mkdp_echo_preview_url = 0
+      vim.g.mkdp_browserfunc = ''
+      vim.g.mkdp_preview_options = {
+        mkit = {},
+        katex = {},
+        uml = {},
+        maid = {},
+        disable_sync_scroll = 0,
+        sync_scroll_type = 'middle',
+        hide_yaml_meta = 1,
+        sequence_diagrams = {},
+        flowchart_diagrams = {},
+        content_editable = false,
+        disable_filename = 0,
+        toc = {},
+      }
+      vim.g.mkdp_markdown_css = ''
+      vim.g.mkdp_highlight_css = ''
+      vim.g.mkdp_port = ''
+      vim.g.mkdp_page_title = '「${name}」'
+      vim.g.mkdp_filetypes = { 'markdown' }
+      vim.g.mkdp_theme = 'dark'
+    end,
   },
 }

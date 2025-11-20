@@ -85,13 +85,18 @@ return {
           map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
+          -- Diagnostics
+          map('gl', vim.diagnostic.open_float, 'Open Diagnostic Float')
+          map('[d', vim.diagnostic.goto_prev, 'Go to Previous Diagnostic')
+          map(']d', vim.diagnostic.goto_next, 'Go to Next Diagnostic')
+
           -- Utility function for version compatibility
           ---@param client vim.lsp.Client
           ---@param method vim.lsp.protocol.Method
           ---@param bufnr? integer
           ---@return boolean
           local function client_supports_method(client, method, bufnr)
-            if vim.fn.has('nvim-0.11') == 1 then
+            if vim.fn.has 'nvim-0.11' == 1 then
               return client:supports_method(method, bufnr)
             else
               return client.supports_method(method, { bufnr = bufnr })
@@ -119,7 +124,7 @@ return {
               group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds({ group = 'kickstart-lsp-highlight', buffer = event2.buf })
+                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
               end,
             })
           end
@@ -127,7 +132,7 @@ return {
           -- Inlay hints toggle
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
         end,
@@ -136,7 +141,7 @@ return {
       -- ========================================================================
       -- Diagnostic Configuration
       -- ========================================================================
-      vim.diagnostic.config({
+      vim.diagnostic.config {
         severity_sort = true,
         float = { border = 'rounded', source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
@@ -155,7 +160,7 @@ return {
             return diagnostic.message
           end,
         },
-      })
+      }
 
       -- ========================================================================
       -- LSP Capabilities
@@ -169,11 +174,14 @@ return {
         -- Web development
         html = {},
         cssls = {},
-        tsserver = {},
+        ['typescript-language-server'] = {}, -- Updated name in mason registry
         emmet_ls = {},
 
         -- Julia
         julials = {},
+
+        -- Markdown
+        marksman = {},
 
         -- LaTeX
         ltex = {
@@ -217,6 +225,16 @@ return {
           },
         },
 
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = 'off',
+              },
+            },
+          },
+        },
+
         -- Rust
         rust_analyzer = {},
 
@@ -239,20 +257,27 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua',
         'ruff',
+        'pyright',
       })
-      require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup({
+      require('mason-lspconfig').setup {
         ensure_installed = {},
         automatic_installation = false,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            -- Handle TypeScript server name differences between Mason and lspconfig
+            local lspconfig_name = server_name
+            if server_name == 'typescript-language-server' then
+              -- Mason uses 'typescript-language-server', lspconfig uses 'ts_ls'
+              lspconfig_name = 'ts_ls'
+            end
+            require('lspconfig')[lspconfig_name].setup(server)
           end,
         },
-      })
+      }
     end,
   },
 }

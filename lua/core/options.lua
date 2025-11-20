@@ -37,8 +37,8 @@ vim.g.have_nerd_font = false
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- Python host program
-vim.g.python3_host_prog = vim.fn.trim(vim.fn.system('which python'))
+-- Python host program (using spade environment)
+vim.g.python3_host_prog = '/Users/dkraemer/.uv/spade/bin/python3'
 
 -- ============================================================================
 -- UI and Display
@@ -84,7 +84,7 @@ vim.schedule(function()
 end)
 
 -- Allow switching buffers without saving
-vim.opt.hidden = true
+-- vim.opt.hidden = true  -- Deprecated: enabled by default in modern Neovim
 
 -- Format options
 vim.opt.formatoptions = vim.opt.formatoptions
@@ -114,13 +114,13 @@ vim.opt.gdefault = true
 -- ============================================================================
 -- Persistent undo
 vim.opt.undofile = true
-vim.opt.undodir = vim.fn.expand('~/.vim/undodir')
+vim.opt.undodir = vim.fn.expand '~/.vim/undodir'
 
 -- No swap files
 vim.opt.swapfile = false
 
 -- Change to file's directory when opening
-vim.opt.autochdir = true
+vim.opt.autochdir = true  -- Change working directory to current file's directory
 
 -- Confirm before failing on unsaved changes
 vim.opt.confirm = true
@@ -144,4 +144,9 @@ vim.opt.timeoutlen = 300
 vim.opt.lazyredraw = true
 
 -- Avoid ins-completion messages
-vim.opt.shortmess:append('c')
+vim.opt.shortmess:append 'c'
+
+-- Terminal performance optimizations
+vim.opt.ttyfast = true -- Assume fast terminal connection
+vim.opt.shell = vim.fn.executable('zsh') == 1 and 'zsh' or vim.o.shell
+vim.g.terminal_scrollback = 1000 -- Limit scrollback (default is 10000)

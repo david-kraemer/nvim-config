@@ -65,13 +65,12 @@ require('lazy').setup({
   { import = 'plugins.treesitter' },
   { import = 'plugins.git' },
   { import = 'plugins.ui' },
+  { import = 'plugins.claude' },
   { import = 'plugins.lang.python' },
   { import = 'plugins.lang.latex' },
   { import = 'plugins.lang.web' },
   { import = 'plugins.lang.julia' },
 
-  -- Import custom plugins from lua/custom/plugins/*.lua (if they exist)
-  { import = 'custom.plugins' },
 }, {
   -- lazy.nvim configuration options
   ui = {

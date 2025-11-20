@@ -30,7 +30,7 @@ return {
   {
     'saghen/blink.cmp',
     event = 'InsertEnter', -- Load when entering insert mode, not at startup
-    version = '1.*',
+    version = false, -- Use latest version for bug fixes and improvements
     dependencies = {
       {
         'L3MON4D3/LuaSnip',
@@ -38,7 +38,7 @@ return {
         build = (function()
           -- Build step needed for regex support in snippets
           -- Not supported on many Windows environments
-          if vim.fn.has('win32') == 1 or vim.fn.executable('make') == 0 then
+          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
             return
           end
           return 'make install_jsregexp'
@@ -124,7 +124,7 @@ return {
       {
         '<leader>f',
         function()
-          require('conform').format({ async = true, lsp_format = 'fallback' })
+          require('conform').format { async = true, lsp_format = 'fallback' }
         end,
         mode = '',
         desc = '[F]ormat buffer',
@@ -139,18 +139,21 @@ return {
           return nil
         else
           return {
-            timeout_ms = 500,
+            timeout_ms = 5000,
             lsp_format = 'fallback',
           }
         end
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = { 'ruff_format' },
+        python = { 'ruff_organize_imports', 'ruff_fix', 'ruff_format' },
         javascript = { 'prettier' },
+        javascriptreact = { 'prettier' },
         typescript = { 'prettier' },
+        typescriptreact = { 'prettier' },
         css = { 'prettier' },
         json = { 'prettier' },
+        markdown = { 'prettier' },
       },
     },
   },

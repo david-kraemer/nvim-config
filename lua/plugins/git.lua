@@ -5,19 +5,19 @@
 
   Plugins for git workflow:
     - Gitsigns: Git decorations and hunk operations
-    - Neogit: Magit-like git interface
+    - Lazygit: Terminal UI for git commands
     - Diffview: Advanced diff and history viewer
-    - Telescope git pickers
 
   Organization:
-    - Gitsigns (inline git decorations)
-    - Neogit (commit interface)
-    - Diffview (diff viewer)
-    - Keymaps for git workflow
+    - Gitsigns (inline git decorations and hunk operations)
+    - Lazygit (primary git interface)
+    - Diffview (detailed diff viewer)
+    - Minimal git keymaps
 
   Extension:
-    - Add new git tools here
-    - Keep git-related keymaps in this file
+    - Most git operations go through lazygit (<leader>gg)
+    - Quick hunk operations stay with gitsigns (<leader>h*)
+    - Detailed diffs available via diffview (<leader>gd)
 --]]
 
 return {
@@ -123,33 +123,34 @@ return {
   },
 
   -- ============================================================================
-  -- Neogit (Magit-like interface)
+  -- Lazygit (Terminal UI for git)
   -- ============================================================================
   {
-    'NeogitOrg/neogit',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'sindrets/diffview.nvim',
-      'nvim-telescope/telescope.nvim',
-      'ibhagwan/fzf-lua',
+    'kdheepak/lazygit.nvim',
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
     },
-    config = true,
+    dependencies = { 'nvim-lua/plenary.nvim' },
     keys = {
-      {
-        '<leader>ng',
-        function()
-          require('neogit').open()
-        end,
-        desc = '[N]eo[G]it',
-      },
-      {
-        '<leader>nc',
-        function()
-          require('neogit').open({ 'commit' })
-        end,
-        desc = '[N]eogit [C]ommit',
-      },
+      { '<leader>gg', '<cmd>LazyGit<CR>', desc = '[G]it [G]UI (lazygit)' },
+      { '<leader>gf', '<cmd>LazyGitFilterCurrentFile<CR>', desc = '[G]it [F]ile history' },
+      { '<leader>gc', '<cmd>LazyGitFilter<CR>', desc = '[G]it [C]ommits (filter)' },
     },
+    config = function()
+      -- Use floating window for less intrusive UX (consistent with claude-code)
+      vim.g.lazygit_floating_window_winblend = 0
+      vim.g.lazygit_floating_window_scaling_factor = 0.9
+      vim.g.lazygit_floating_window_border_chars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' }
+      vim.g.lazygit_floating_window_use_plenary = 0
+      vim.g.lazygit_use_neovim_remote = 1
+      
+      -- Custom config location if needed
+      vim.g.lazygit_use_custom_config_file_path = 0
+    end,
   },
 
   -- ============================================================================
@@ -164,42 +165,17 @@ return {
   },
 
   -- ============================================================================
-  -- Additional Git Keymaps (using Telescope)
+  -- Complementary Git Keymaps
   -- ============================================================================
+  -- Minimal additional keymaps that complement lazygit's functionality
   {
     'nvim-telescope/telescope.nvim',
     optional = true,
     keys = {
-      { '<leader>gf', '<cmd>Telescope git_files<CR>', desc = '[G]it [F]iles' },
-      { '<leader>gc', '<cmd>Telescope git_commits<CR>', desc = '[G]it [C]ommits' },
-      { '<leader>gb', '<cmd>Telescope git_branches<CR>', desc = '[G]it [B]ranches' },
-      { '<leader>gs', '<cmd>Telescope git_status<CR>', desc = '[G]it [S]tatus' },
-      { '<leader>gx', '<cmd>Telescope git_bcommits<CR>', desc = '[G]it Buffer Commits' },
-      { '<leader>gl', '<cmd>Gitsigns toggle_current_line_blame<CR>', desc = '[G]it [L]ine Blame' },
-      {
-        '<leader>gp',
-        function()
-          vim.cmd('terminal git push')
-          vim.cmd('startinsert')
-        end,
-        desc = '[G]it [P]ush',
-      },
-      {
-        '<leader>gg',
-        function()
-          vim.cmd('20split | terminal git status')
-          vim.cmd('startinsert')
-        end,
-        desc = '[G]it Status (terminal)',
-      },
-      {
-        '<leader>cc',
-        function()
-          vim.cmd('Gitsigns stage_hunk')
-          vim.cmd('Neogit commit')
-        end,
-        desc = '[C]ommit [C]urrent buffer',
-      },
+      { '<leader>gF', '<cmd>Telescope git_files<CR>', desc = '[G]it [F]iles (search)' },
+      { '<leader>gs', '<cmd>Telescope git_status<CR>', desc = '[G]it [S]tatus (telescope)' },
+      { '<leader>gb', '<cmd>Telescope git_branches<CR>', desc = '[G]it [B]ranches (switch)' },
+      { '<leader>gl', '<cmd>Gitsigns toggle_current_line_blame<CR>', desc = '[G]it [L]ine blame toggle' },
     },
   },
 }

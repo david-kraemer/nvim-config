@@ -12,8 +12,7 @@
     - Active colorscheme
     - Alternative colorschemes (commented)
     - UI enhancement plugins
-
-  Extension:
+Extension:
     - To change colorscheme: uncomment desired scheme, comment current
     - Add new colorschemes as entries in the return array
     - Keep one colorscheme active (lazy = false, priority = 1000)
@@ -23,6 +22,7 @@ return {
   -- ============================================================================
   -- Colorscheme: Zenbones
   -- ============================================================================
+  --[[
   {
     'zenbones-theme/zenbones.nvim',
     dependencies = 'rktjmp/lush.nvim',
@@ -31,6 +31,27 @@ return {
     config = function()
       vim.g.zenbones_darken_comments = 45
       vim.cmd.colorscheme('zenbones')
+    end,
+  },
+  --]]
+
+  --[[
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme('tokyonight')
+    end,
+  },
+  --]]
+  {
+    'sainnhe/gruvbox-material',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.g.gruvbox_material_background = 'hard'
+      vim.cmd.colorscheme 'gruvbox-material'
     end,
   },
 

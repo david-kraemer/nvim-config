@@ -74,3 +74,16 @@ vim.keymap.set('n', '[q', ':cprev<CR>', { desc = 'Previous quickfix' })
 -- ============================================================================
 vim.keymap.set('n', '<leader>ht', 'cit', { desc = 'Change inner HTML tag content' })
 vim.keymap.set('n', '<leader>hT', 'cat', { desc = 'Change entire HTML tag and content' })
+
+-- ============================================================================
+-- Scratch
+-- ============================================================================
+vim.keymap.set('n', '<leader>ff', ':Scratch<CR>', { desc = 'Open daily scratch file' })
+vim.keymap.set('n', '<leader>fm', ':ScratchMarkdown<CR>', { desc = 'Open daily Markdown scratch file' })
+vim.keymap.set('n', '<leader>fp', ':ScratchPython<CR>', { desc = 'Open daily Python scratch file' })
+vim.keymap.set('n', '<leader>fj', ':ScratchJulia<CR>', { desc = 'Open daily Julia scratch file' })
+vim.keymap.set('n', '<leader>fr', ':ScratchRust<CR>', { desc = 'Open daily Rust scratch file' })
+vim.keymap.set('n', '<leader>fs', ':ScratchSQL<CR>', { desc = 'Open daily SQL scratch file' })
+vim.keymap.set('n', '<leader>fl', ':ScratchTeX<CR>', { desc = 'Open daily LaTeX scratch file' })
+vim.keymap.set('n', '<leader>ft', ':ScratchTemplate ', { desc = 'Edit scratch template' })
+vim.keymap.set('n', '<leader>fP', ':ScratchPurge ', { desc = 'Purge scratch files older than N days (default 7)' })

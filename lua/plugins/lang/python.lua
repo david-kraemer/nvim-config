@@ -59,8 +59,9 @@ return {
   -- ============================================================================
   {
     '3rd/image.nvim',
+    enabled = vim.env.TERM == 'xterm-kitty', -- Only enable if using Kitty terminal
     opts = {
-      backend = 'kitty', -- or 'ueberzug' if not using kitty terminal
+      backend = 'kitty', -- Kitty is the only backend that works on macOS
       integrations = {
         markdown = {
           enabled = true,
@@ -98,19 +99,26 @@ return {
   -- ============================================================================
   -- Virtual Environment Selector
   -- ============================================================================
-  {
-    'linux-cultist/venv-selector.nvim',
-    dependencies = {
-      'neovim/nvim-lspconfig',
-      'nvim-telescope/telescope.nvim',
-      'mfussenegger/nvim-dap-python',
-    },
-    ft = 'python', -- Only load for Python files
-    branch = 'regexp',
-    opts = {},
-    keys = {
-      { '<leader>vs', '<cmd>VenvSelect<cr>', desc = '[V]env [S]elect' },
-      { '<leader>vc', '<cmd>VenvSelectCached<cr>', desc = '[V]env [C]ached' },
-    },
-  },
+  -- TEMPORARILY DISABLED - venv-selector was causing errors with scratch files
+  -- To re-enable:
+  -- 1. Uncomment the block below
+  -- 2. Run :Lazy sync
+  -- 3. Restart Neovim
+  -- {
+  --   'linux-cultist/venv-selector.nvim',
+  --   dependencies = {
+  --     'neovim/nvim-lspconfig',
+  --     'nvim-telescope/telescope.nvim',
+  --     'mfussenegger/nvim-dap-python',
+  --   },
+  --   ft = 'python',
+  --   lazy = true,
+  --   opts = {
+  --     notify_user_on_activate = false,
+  --   },
+  --   keys = {
+  --     { '<leader>vs', '<cmd>VenvSelect<cr>', desc = '[V]env [S]elect' },
+  --     { '<leader>vc', '<cmd>VenvSelectCached<cr>', desc = '[V]env [C]ached' },
+  --   },
+  -- },
 }
