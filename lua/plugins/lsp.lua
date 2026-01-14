@@ -174,7 +174,6 @@ return {
         -- Web development
         html = {},
         cssls = {},
-        ['typescript-language-server'] = {}, -- Updated name in mason registry
         emmet_ls = {},
 
         -- Julia
