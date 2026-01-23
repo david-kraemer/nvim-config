@@ -45,7 +45,7 @@ return {
       { '<C-n>', ':NvimTreeToggle<CR>', desc = 'Toggle file tree', noremap = true },
     },
     config = function()
-      require('nvim-tree').setup({
+      require('nvim-tree').setup {
         filters = {
           dotfiles = true,
           custom = { 'node_modules', '.git', '.cache' },
@@ -59,7 +59,7 @@ return {
             quit_on_open = false,
           },
         },
-      })
+      }
 
       -- Auto-close nvim-tree if it's the last window
       -- Prevents the need for double :q when only the tree remains
@@ -70,7 +70,7 @@ return {
           local wins = vim.api.nvim_list_wins()
           for _, w in ipairs(wins) do
             local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
-            if bufname:match('NvimTree_') ~= nil then
+            if bufname:match 'NvimTree_' ~= nil then
               table.insert(tree_wins, w)
             end
             if vim.api.nvim_win_get_config(w).relative ~= '' then
@@ -99,7 +99,7 @@ return {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
         cond = function()
-          return vim.fn.executable('make') == 1
+          return vim.fn.executable 'make' == 1
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
@@ -109,10 +109,28 @@ return {
     keys = {
       { '<leader>sh', '<cmd>Telescope help_tags<cr>', desc = '[S]earch [H]elp' },
       { '<leader>sk', '<cmd>Telescope keymaps<cr>', desc = '[S]earch [K]eymaps' },
-      { '<leader>sf', '<cmd>Telescope find_files<cr>', desc = '[S]earch [F]iles' },
+      {
+        '<leader>sf',
+        function()
+          require('telescope.builtin').find_files { cwd = vim.g.nvim_root }
+        end,
+        desc = '[S]earch [F]iles',
+      },
       { '<leader>ss', '<cmd>Telescope builtin<cr>', desc = '[S]earch [S]elect Telescope' },
-      { '<leader>sw', '<cmd>Telescope grep_string<cr>', desc = '[S]earch current [W]ord' },
-      { '<leader>sg', '<cmd>Telescope live_grep<cr>', desc = '[S]earch by [G]rep' },
+      {
+        '<leader>sw',
+        function()
+          require('telescope.builtin').grep_string { cwd = vim.g.nvim_root }
+        end,
+        desc = '[S]earch current [W]ord',
+      },
+      {
+        '<leader>sg',
+        function()
+          require('telescope.builtin').live_grep { cwd = vim.g.nvim_root }
+        end,
+        desc = '[S]earch by [G]rep',
+      },
       { '<leader>sd', '<cmd>Telescope diagnostics<cr>', desc = '[S]earch [D]iagnostics' },
       { '<leader>sr', '<cmd>Telescope resume<cr>', desc = '[S]earch [R]esume' },
       { '<leader>s.', '<cmd>Telescope oldfiles<cr>', desc = '[S]earch Recent Files ("." for repeat)' },
@@ -120,33 +138,43 @@ return {
       {
         '<leader>/',
         function()
-          require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
+          require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
             winblend = 10,
             previewer = false,
-          }))
+          })
         end,
         desc = '[/] Fuzzily search in current buffer',
       },
       {
         '<leader>s/',
         function()
-          require('telescope.builtin').live_grep({
+          require('telescope.builtin').live_grep {
             grep_open_files = true,
             prompt_title = 'Live Grep in Open Files',
-          })
+          }
         end,
         desc = '[S]earch [/] in Open Files',
       },
       {
         '<leader>sn',
         function()
-          require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
+          require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }
         end,
         desc = '[S]earch [N]eovim files',
       },
+      {
+        '<leader>fs',
+        function()
+          require('telescope.builtin').live_grep {
+            cwd = vim.fn.stdpath 'data' .. '/scratch',
+            prompt_title = 'Search Scratch Files',
+          }
+        end,
+        desc = '[F]ile [S]earch scratch files',
+      },
     },
     config = function()
-      require('telescope').setup({
+      require('telescope').setup {
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -162,7 +190,7 @@ return {
             '%.fls',
           },
         },
-      })
+      }
 
       -- Enable extensions
       pcall(require('telescope').load_extension, 'fzf')
@@ -245,8 +273,8 @@ return {
     'echasnovski/mini.statusline',
     lazy = false,
     config = function()
-      local statusline = require('mini.statusline')
-      statusline.setup({ use_icons = vim.g.have_nerd_font })
+      local statusline = require 'mini.statusline'
+      statusline.setup { use_icons = vim.g.have_nerd_font }
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
         return '%2l:%-2v'
@@ -327,7 +355,7 @@ return {
       vim.g.mkdp_port = ''
       vim.g.mkdp_page_title = '「${name}」'
       vim.g.mkdp_filetypes = { 'markdown' }
-      vim.g.mkdp_theme = 'dark'
+      vim.g.mkdp_theme = 'light'
     end,
   },
 }
