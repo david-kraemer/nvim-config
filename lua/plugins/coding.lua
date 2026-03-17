@@ -96,6 +96,9 @@ return {
   {
     'github/copilot.vim',
     event = 'InsertEnter', -- Defer heavy Node.js process until needed
+    init = function()
+      vim.g.copilot_no_tab_map = true -- Prevent default <Tab> mapping (conflicts with blink.cmp)
+    end,
     config = function()
       vim.keymap.set('i', '<C-J>', 'copilot#Accept("<CR>")', { silent = true, expr = true, replace_keycodes = false })
       vim.keymap.set('i', '<C-K>', 'copilot#Next()', { silent = true, expr = true })
