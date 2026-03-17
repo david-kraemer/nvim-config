@@ -109,3 +109,8 @@ vim.keymap.set('n', '<leader>fq', ':ScratchSQL<CR>', { desc = 'Open daily SQL sc
 vim.keymap.set('n', '<leader>fl', ':ScratchTeX<CR>', { desc = 'Open daily LaTeX scratch file' })
 vim.keymap.set('n', '<leader>ft', ':ScratchTemplate ', { desc = 'Edit scratch template' })
 vim.keymap.set('n', '<leader>fP', ':ScratchPurge ', { desc = 'Purge scratch files older than N days (default 7)' })
+
+-- ============================================================================
+-- Hebcal
+-- ============================================================================
+vim.keymap.set('n', '<leader>hc', function() require('core.hebcal').float() end, { desc = 'Hebcal zmanim' })
