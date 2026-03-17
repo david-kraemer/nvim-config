@@ -61,6 +61,9 @@ return {
         'query',
         'diff',
         'luadoc',
+
+        -- Lisp family
+        'scheme',
       },
 
       -- Disable auto-install to avoid network calls at runtime

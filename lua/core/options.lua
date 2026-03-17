@@ -48,7 +48,7 @@ vim.opt.termguicolors = true
 
 -- Line numbers
 vim.opt.number = true
--- vim.opt.relativenumber = true  -- Uncomment for relative line numbers
+vim.opt.relativenumber = true
 
 -- Don't show mode in command line (shown in statusline)
 vim.opt.showmode = false
@@ -136,6 +136,9 @@ vim.opt.updatetime = 250
 
 -- Faster mapped sequence completion
 vim.opt.timeoutlen = 300
+
+-- Fast terminal key sequence resolution (escape codes)
+vim.opt.ttimeoutlen = 10
 
 -- Don't redraw during macros
 vim.opt.lazyredraw = true

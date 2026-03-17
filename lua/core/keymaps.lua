@@ -38,6 +38,34 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- ============================================================================
+-- Accelerated j/k
+-- ============================================================================
+-- Rapid repeats ramp from 1 to 6 lines per keystroke; slow presses stay at 1
+local function accel(key)
+  local last = 0
+  local step = 1
+  return function()
+    if vim.v.count ~= 0 then
+      step = 1
+      return key
+    end
+    local now = vim.uv.hrtime() / 1e6
+    if now - last < 100 then
+      step = math.min(step + 1, 3)
+    else
+      step = 1
+    end
+    last = now
+    return step .. key
+  end
+end
+
+vim.keymap.set({ 'n', 'v' }, 'j', accel 'j', { expr = true, desc = 'Accelerated down' })
+vim.keymap.set({ 'n', 'v' }, 'k', accel 'k', { expr = true, desc = 'Accelerated up' })
+vim.keymap.set({ 'n', 'v' }, 'h', accel 'h', { expr = true, desc = 'Accelerated left' })
+vim.keymap.set({ 'n', 'v' }, 'l', accel 'l', { expr = true, desc = 'Accelerated right' })
+
+-- ============================================================================
 -- Movement Reminders (disable arrow keys)
 -- ============================================================================
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -57,12 +85,6 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Window command prefix
 vim.keymap.set('n', '<leader>w', '<C-w>', { desc = 'Window commands' })
 
--- Note: The following keymaps may not work in all terminals
--- vim.keymap.set('n', '<C-S-h>', '<C-w>H', { desc = 'Move window to the left' })
--- vim.keymap.set('n', '<C-S-l>', '<C-w>L', { desc = 'Move window to the right' })
--- vim.keymap.set('n', '<C-S-j>', '<C-w>J', { desc = 'Move window to the lower' })
--- vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
-
 -- ============================================================================
 -- Quickfix Navigation
 -- ============================================================================
@@ -72,8 +94,8 @@ vim.keymap.set('n', '[q', ':cprev<CR>', { desc = 'Previous quickfix' })
 -- ============================================================================
 -- HTML Tag Manipulation
 -- ============================================================================
-vim.keymap.set('n', '<leader>ht', 'cit', { desc = 'Change inner HTML tag content' })
-vim.keymap.set('n', '<leader>hT', 'cat', { desc = 'Change entire HTML tag and content' })
+vim.keymap.set('n', '<leader>xit', 'cit', { desc = 'Change inner HTML tag content' })
+vim.keymap.set('n', '<leader>xat', 'cat', { desc = 'Change entire HTML tag and content' })
 
 -- ============================================================================
 -- Scratch

@@ -15,13 +15,14 @@
 -- Text editing options for Markdown
 vim.opt_local.wrap = true
 vim.opt_local.linebreak = true
--- vim.opt_local.textwidth = 80  -- Disabled to prevent hard line breaks
-vim.opt_local.colorcolumn = '80'  -- Visual guide at column 80
+vim.opt_local.textwidth = 80 -- Disabled to prevent hard line breaks
+vim.opt_local.colorcolumn = '80' -- Visual guide at column 80
 vim.opt_local.spell = true
 vim.opt_local.spelllang = 'en_us'
 vim.opt_local.conceallevel = 0 -- Disable concealing in Markdown
 
 -- Better handling of code blocks
 vim.opt_local.autoindent = true
-vim.opt_local.smartindent = false  -- Prevents markdown interfering with code indentation
-vim.opt_local.indentexpr = ""      -- Let embedded languages handle their own indentation
+vim.opt_local.smartindent = false -- Prevents markdown interfering with code indentation
+vim.opt_local.indentexpr = '' -- Let embedded languages handle their own indentation
+

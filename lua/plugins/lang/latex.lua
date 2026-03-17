@@ -74,9 +74,11 @@ return {
   {
     'nvim-telescope/telescope-bibtex.nvim',
     dependencies = { 'nvim-telescope/telescope.nvim' },
+    keys = {
+      { '<leader>sb', '<cmd>Telescope bibtex<CR>', desc = '[S]earch [B]ibliography' },
+    },
     config = function()
       require('telescope').load_extension('bibtex')
-      vim.keymap.set('n', '<leader>sb', '<cmd>Telescope bibtex<CR>', { desc = '[S]earch [B]ibliography' })
     end,
   },
 

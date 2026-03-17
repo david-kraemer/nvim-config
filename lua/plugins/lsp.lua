@@ -71,11 +71,11 @@ return {
           end
 
           -- Navigation
-          map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
           map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
-          map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           -- Symbols
           map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
@@ -224,15 +224,7 @@ return {
           },
         },
 
-        pyright = {
-          settings = {
-            python = {
-              analysis = {
-                typeCheckingMode = 'off',
-              },
-            },
-          },
-        },
+        ty = {},
 
         -- Rust
         rust_analyzer = {},
@@ -256,7 +248,8 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua',
         'ruff',
-        'pyright',
+        -- 'pyright',
+        'ty',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -277,6 +270,18 @@ return {
           end,
         },
       }
+
+      -- ========================================================================
+      -- Non-Mason LSP Servers (using vim.lsp.config for nvim 0.11+)
+      -- ========================================================================
+      -- Racket LSP (install via: raco pkg install racket-langserver)
+      vim.lsp.config('racket_langserver', {
+        cmd = { 'racket', '--lib', 'racket-langserver' },
+        filetypes = { 'racket', 'scheme' },
+        root_markers = { '.git' },
+        capabilities = capabilities,
+      })
+      vim.lsp.enable 'racket_langserver'
     end,
   },
 }

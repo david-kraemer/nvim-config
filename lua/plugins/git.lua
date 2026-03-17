@@ -106,7 +106,6 @@ return {
         map('n', '<leader>hb', function()
           gs.blame_line { full = true }
         end, { desc = '[H]unk [B]lame line' })
-        map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = '[T]oggle [B]lame' })
         map('n', '<leader>hd', gs.diffthis, { desc = '[H]unk [D]iff' })
         map('n', '<leader>hD', function()
           gs.diffthis '~'
@@ -161,7 +160,7 @@ return {
     keys = {
       -- Pull Requests
       { '<leader>opl', '<cmd>Octo pr list<CR>', desc = '[O]cto [P]R [L]ist' },
-      { '<leader>opc', '<cmd>Octo pr create<CR>', desc = '[O]cto [P]R [C]reate' },
+      { '<leader>opc', '<cmd>Octo pr create draft<CR>', desc = '[O]cto [P]R [C]reate Draft' },
       { '<leader>opo', '<cmd>Octo pr checkout<CR>', desc = '[O]cto [P]R check[O]ut' },
       { '<leader>opm', '<cmd>Octo pr merge<CR>', desc = '[O]cto [P]R [M]erge' },
       { '<leader>opd', '<cmd>Octo pr diff<CR>', desc = '[O]cto [P]R [D]iff' },
