@@ -389,11 +389,46 @@ return {
     ---@type Flash.Config
     opts = {},
     keys = {
-      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash' },
-      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
-      { 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
-      { 'R', mode = { 'o', 'x' }, function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
-      { '<c-s>', mode = { 'c' }, function() require('flash').toggle() end, desc = 'Toggle Flash Search' },
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function()
+          require('flash').remote()
+        end,
+        desc = 'Remote Flash',
+      },
+      {
+        'R',
+        mode = { 'o', 'x' },
+        function()
+          require('flash').treesitter_search()
+        end,
+        desc = 'Treesitter Search',
+      },
+      {
+        '<c-s>',
+        mode = { 'c' },
+        function()
+          require('flash').toggle()
+        end,
+        desc = 'Toggle Flash Search',
+      },
     },
   },
 
@@ -435,7 +470,7 @@ return {
       -- Tier 2: Workflow
       dashboard = {
         enabled = true,
-        width = 60,
+        width = 68,
         preset = {
           keys = {
             { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
@@ -448,23 +483,71 @@ return {
             { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
           },
         },
-        sections = {
-          { section = 'header' },
-          { section = 'keys', gap = 1, padding = 1 },
-          { section = 'startup' },
-        },
+        sections = (function()
+          local hebcal = require 'core.hebcal'
+          local sections = hebcal.dashboard_sections()
+          table.insert(sections, { padding = 1 })
+          table.insert(sections, { section = 'keys', gap = 1, padding = 1 })
+          table.insert(sections, { section = 'startup' })
+          return sections
+        end)(),
       },
       dim = { enabled = true },
       zen = { enabled = true },
       scroll = { enabled = true },
     },
     keys = {
-      { ']]', function() Snacks.words.jump(1, true) end, desc = 'Next LSP reference', mode = { 'n', 't' } },
-      { '[[', function() Snacks.words.jump(-1, true) end, desc = 'Prev LSP reference', mode = { 'n', 't' } },
-      { '<leader>go', function() Snacks.gitbrowse() end, desc = '[G]it [O]pen in browser' },
-      { '<leader>un', function() Snacks.notifier.show_history() end, desc = 'Notification History' },
-      { '<leader>tz', function() Snacks.zen() end, desc = '[T]oggle [Z]en Mode' },
-      { '<leader>tZ', function() Snacks.zen.zoom() end, desc = '[T]oggle [Z]oom Mode' },
+      {
+        ']]',
+        function()
+          Snacks.words.jump(1, true)
+        end,
+        desc = 'Next LSP reference',
+        mode = { 'n', 't' },
+      },
+      {
+        '[[',
+        function()
+          Snacks.words.jump(-1, true)
+        end,
+        desc = 'Prev LSP reference',
+        mode = { 'n', 't' },
+      },
+      {
+        '<leader>go',
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = '[G]it [O]pen in browser',
+      },
+      {
+        '<leader>un',
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = 'Notification History',
+      },
+      {
+        '<leader>tz',
+        function()
+          Snacks.zen()
+        end,
+        desc = '[T]oggle [Z]en Mode',
+      },
+      {
+        '<leader>tZ',
+        function()
+          Snacks.zen.zoom()
+        end,
+        desc = '[T]oggle [Z]oom Mode',
+      },
+      {
+        '<leader>;',
+        function()
+          Snacks.dashboard()
+        end,
+        desc = 'Dashboard',
+      },
     },
     init = function()
       vim.api.nvim_create_autocmd('User', {
