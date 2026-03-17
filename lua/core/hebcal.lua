@@ -13,7 +13,7 @@ M.zman_spec = {
   { 'Chatzot hayom', 'Chatzot' },
   { 'Mincha Gedolah', 'Mincha' },
   { 'Plag HaMincha', 'Plag' },
-  { 'Candle lighting', 'Candles' },
+  { 'Candle lighting', 'Licht' },
   { 'Sunset', 'Shkiah' },
   { 'Tzeit HaKochavim', 'Tzeit' },
   { 'Havdalah (72 min)', 'Havdala' },
@@ -282,7 +282,7 @@ function M.float()
     col = math.floor((vim.o.columns - width) / 2),
     style = 'minimal',
     border = 'rounded',
-    title = ' hebcal ',
+    title = ' hayom ',
     title_pos = 'center',
   })
 
