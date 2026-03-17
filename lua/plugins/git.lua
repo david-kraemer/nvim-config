@@ -140,15 +140,10 @@ return {
       { '<leader>gc', '<cmd>LazyGitFilter<CR>', desc = '[G]it [C]ommits (filter)' },
     },
     config = function()
-      -- Use floating window for less intrusive UX (consistent with claude-code)
       vim.g.lazygit_floating_window_winblend = 0
       vim.g.lazygit_floating_window_scaling_factor = 0.9
       vim.g.lazygit_floating_window_border_chars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' }
       vim.g.lazygit_floating_window_use_plenary = 0
-      vim.g.lazygit_use_neovim_remote = 1
-
-      -- Custom config location if needed
-      vim.g.lazygit_use_custom_config_file_path = 0
     end,
   },
 

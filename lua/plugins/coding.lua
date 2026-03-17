@@ -97,9 +97,9 @@ return {
     'github/copilot.vim',
     event = 'InsertEnter', -- Defer heavy Node.js process until needed
     config = function()
-      vim.api.nvim_set_keymap('i', '<C-J>', 'copilot#Accept("<CR>")', { silent = true, expr = true })
-      vim.api.nvim_set_keymap('i', '<C-K>', 'copilot#Next()', { silent = true, expr = true })
-      vim.api.nvim_set_keymap('i', '<C-L>', 'copilot#Previous()', { silent = true, expr = true })
+      vim.keymap.set('i', '<C-J>', 'copilot#Accept("<CR>")', { silent = true, expr = true, replace_keycodes = false })
+      vim.keymap.set('i', '<C-K>', 'copilot#Next()', { silent = true, expr = true })
+      vim.keymap.set('i', '<C-L>', 'copilot#Previous()', { silent = true, expr = true })
     end,
   },
 

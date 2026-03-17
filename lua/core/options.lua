@@ -83,9 +83,6 @@ vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
 
--- Allow switching buffers without saving
--- vim.opt.hidden = true  -- Deprecated: enabled by default in modern Neovim
-
 -- Format options
 vim.opt.formatoptions = vim.opt.formatoptions
   - 'a' -- No auto formatting

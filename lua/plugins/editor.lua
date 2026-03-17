@@ -241,8 +241,10 @@ return {
       },
       spec = {
         { '<leader>b', group = '[B]uffer' },
+        { '<leader>g', group = '[G]it' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
+        { '<leader>x', group = 'E[X]tra' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>o', group = '[O]cto (GitHub)' },
         { '<leader>op', group = '[O]cto [P]R' },
@@ -331,36 +333,56 @@ return {
     keys = {
       { '<leader>mp', '<cmd>MarkdownPreviewToggle<CR>', desc = '[M]arkdown [P]review', ft = 'markdown' },
     },
-    config = function()
-      vim.g.mkdp_auto_start = 0
-      vim.g.mkdp_auto_close = 1
-      vim.g.mkdp_refresh_slow = 0
-      vim.g.mkdp_command_for_global = 0
-      vim.g.mkdp_open_to_the_world = 0
-      vim.g.mkdp_open_ip = ''
-      vim.g.mkdp_browser = ''
-      vim.g.mkdp_echo_preview_url = 0
-      vim.g.mkdp_browserfunc = ''
-      vim.g.mkdp_preview_options = {
-        mkit = {},
-        katex = {},
-        uml = {},
-        maid = {},
-        disable_sync_scroll = 0,
-        sync_scroll_type = 'middle',
-        hide_yaml_meta = 1,
-        sequence_diagrams = {},
-        flowchart_diagrams = {},
-        content_editable = false,
-        disable_filename = 0,
-        toc = {},
-      }
-      vim.g.mkdp_markdown_css = ''
-      vim.g.mkdp_highlight_css = ''
-      vim.g.mkdp_port = ''
-      vim.g.mkdp_page_title = '「${name}」'
-      vim.g.mkdp_filetypes = { 'markdown' }
-      vim.g.mkdp_theme = 'light'
-    end,
+  },
+
+  -- ============================================================================
+  -- Flash (label-jump navigation)
+  -- ============================================================================
+  {
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    ---@type Flash.Config
+    opts = {},
+    keys = {
+      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash' },
+      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
+      { 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
+      { 'R', mode = { 'o', 'x' }, function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
+      { '<c-s>', mode = { 'c' }, function() require('flash').toggle() end, desc = 'Toggle Flash Search' },
+    },
+  },
+
+  -- ============================================================================
+  -- Project-wide Find and Replace
+  -- ============================================================================
+  {
+    'MagicDuck/grug-far.nvim',
+    cmd = 'GrugFar',
+    keys = {
+      { '<leader>sr', '<cmd>GrugFar<CR>', desc = '[S]earch and [R]eplace' },
+    },
+    opts = {},
+  },
+
+  -- ============================================================================
+  -- Snacks (QoL modules)
+  -- ============================================================================
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      bigfile = { enabled = true },
+      quickfile = { enabled = true },
+      indent = { enabled = true },
+      words = { enabled = true },
+      gitbrowse = { enabled = true },
+    },
+    keys = {
+      { ']]', function() Snacks.words.jump(1, true) end, desc = 'Next LSP reference', mode = { 'n', 't' } },
+      { '[[', function() Snacks.words.jump(-1, true) end, desc = 'Prev LSP reference', mode = { 'n', 't' } },
+      { '<leader>go', function() Snacks.gitbrowse() end, desc = '[G]it [O]pen in browser' },
+    },
   },
 }
