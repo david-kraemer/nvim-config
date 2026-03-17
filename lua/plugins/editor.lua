@@ -288,6 +288,7 @@ return {
         { '<leader>g', group = '[G]it' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
+        { '<leader>u', group = '[U]I' },
         { '<leader>x', group = 'E[X]tra' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>o', group = '[O]cto (GitHub)' },
@@ -417,16 +418,72 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
+      -- Tier 0: Already enabled
       bigfile = { enabled = true },
       quickfile = { enabled = true },
       indent = { enabled = true },
       words = { enabled = true },
       gitbrowse = { enabled = true },
+
+      -- Tier 1: Visual upgrades
+      notifier = { enabled = true },
+      input = { enabled = true },
+      statuscolumn = { enabled = true },
+      toggle = { enabled = true },
+      rename = { enabled = true },
+
+      -- Tier 2: Workflow
+      dashboard = {
+        enabled = true,
+        width = 60,
+        preset = {
+          keys = {
+            { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = ' ', key = 'g', desc = 'Find Text', action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = ' ', key = 'r', desc = 'Recent Files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
+            { icon = ' ', key = 's', desc = 'Scratch', action = ':Scratch' },
+            { icon = ' ', key = 'c', desc = 'Config', action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+            { icon = ' ', key = 'l', desc = 'Lazy', action = ':Lazy' },
+            { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+          },
+        },
+        sections = {
+          { section = 'header' },
+          { section = 'keys', gap = 1, padding = 1 },
+          { section = 'startup' },
+        },
+      },
+      dim = { enabled = true },
+      zen = { enabled = true },
+      scroll = { enabled = true },
     },
     keys = {
       { ']]', function() Snacks.words.jump(1, true) end, desc = 'Next LSP reference', mode = { 'n', 't' } },
       { '[[', function() Snacks.words.jump(-1, true) end, desc = 'Prev LSP reference', mode = { 'n', 't' } },
       { '<leader>go', function() Snacks.gitbrowse() end, desc = '[G]it [O]pen in browser' },
+      { '<leader>un', function() Snacks.notifier.show_history() end, desc = 'Notification History' },
+      { '<leader>tz', function() Snacks.zen() end, desc = '[T]oggle [Z]en Mode' },
+      { '<leader>tZ', function() Snacks.zen.zoom() end, desc = '[T]oggle [Z]oom Mode' },
     },
+    init = function()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'VeryLazy',
+        callback = function()
+          -- Toggle keymaps via snacks toggle API
+          Snacks.toggle.option('spell', { name = 'Spelling' }):map '<leader>ts'
+          Snacks.toggle.option('wrap', { name = 'Wrap' }):map '<leader>tw'
+          Snacks.toggle.option('relativenumber', { name = 'Relative Number' }):map '<leader>tR'
+          Snacks.toggle.diagnostics():map '<leader>td'
+          Snacks.toggle.line_number():map '<leader>tl'
+          Snacks.toggle.treesitter():map '<leader>tT'
+          Snacks.toggle.inlay_hints():map '<leader>th'
+          Snacks.toggle.indent():map '<leader>tI'
+          Snacks.toggle.dim():map '<leader>tD'
+          Snacks.toggle.scroll():map '<leader>tS'
+          Snacks.toggle.words():map '<leader>tW'
+        end,
+      })
+    end,
   },
 }
