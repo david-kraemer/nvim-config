@@ -456,7 +456,13 @@ return {
       -- Tier 0: Already enabled
       bigfile = { enabled = true },
       quickfile = { enabled = true },
-      indent = { enabled = true },
+      indent = {
+        enabled = true,
+        animate = {
+          duration = { step = 50, total = 200 },
+          easing = 'outQuad',
+        },
+      },
       words = { enabled = true },
       gitbrowse = { enabled = true },
 
@@ -492,8 +498,22 @@ return {
           return sections
         end)(),
       },
-      dim = { enabled = true },
-      zen = { enabled = true },
+      scratch = {
+        enabled = true,
+        filekey = { cwd = true, branch = false, count = true },
+      },
+      dim = {
+        enabled = true,
+        animate = {
+          duration = { step = 10, total = 300 },
+          easing = 'outQuad',
+        },
+      },
+      zen = { enabled = true, animate = {
+        duration = { step = 10, total = 300 },
+        easing = 'outQuad',
+      }
+ },
       scroll = { enabled = true },
     },
     keys = {
@@ -547,6 +567,50 @@ return {
           Snacks.dashboard()
         end,
         desc = 'Dashboard',
+      },
+      -- Journal (persistent daily markdown)
+      {
+        '<leader>ff',
+        function()
+          Snacks.scratch { file = os.date(vim.env.HOME .. '/journal/%Y-%m-%d.md'), ft = 'markdown' }
+        end,
+        desc = 'Journal (today)',
+      },
+      -- Scratch (ephemeral, cwd-aware)
+      {
+        '<leader>fp',
+        function()
+          Snacks.scratch { ft = 'python' }
+        end,
+        desc = 'Scratch Python',
+      },
+      {
+        '<leader>fq',
+        function()
+          Snacks.scratch { ft = 'sql' }
+        end,
+        desc = 'Scratch SQL',
+      },
+      {
+        '<leader>fl',
+        function()
+          Snacks.scratch { ft = 'tex' }
+        end,
+        desc = 'Scratch LaTeX',
+      },
+      {
+        '<leader>fu',
+        function()
+          Snacks.scratch { ft = 'lua' }
+        end,
+        desc = 'Scratch Lua',
+      },
+      {
+        '<leader>fs',
+        function()
+          Snacks.scratch.select()
+        end,
+        desc = 'Scratch Select',
       },
     },
     init = function()

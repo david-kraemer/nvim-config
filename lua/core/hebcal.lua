@@ -13,7 +13,7 @@ M.zman_spec = {
   { 'Chatzot hayom', 'Chatzot' },
   { 'Mincha Gedolah', 'Mincha' },
   { 'Plag HaMincha', 'Plag' },
-  { 'Candle lighting', 'Licht' },
+  { 'Candle lighting', 'Candle lighting' },
   { 'Sunset', 'Shkiah' },
   { 'Tzeit HaKochavim', 'Tzeit' },
   { 'Havdalah (72 min)', 'Havdala' },
@@ -195,11 +195,11 @@ function M.dashboard_sections()
   end
 
   local sections = {}
-  for _, row in ipairs(rows(passed)) do
-    table.insert(sections, { text = { row, hl = 'Comment' }, align = 'center' })
-  end
   if candle_text then
     table.insert(sections, { text = { candle_text, hl = 'DiagnosticWarn' }, align = 'center' })
+  end
+  for _, row in ipairs(rows(passed)) do
+    table.insert(sections, { text = { row, hl = 'Comment' }, align = 'center' })
   end
   for _, row in ipairs(rows(upcoming)) do
     table.insert(sections, { text = { row, hl = 'SnacksDashboardDesc' }, align = 'center' })
