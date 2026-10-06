@@ -114,7 +114,7 @@ vim.opt.undofile = true
 vim.opt.undodir = vim.fn.expand '~/.vim/undodir'
 
 -- No swap files
-vim.opt.swapfile = false
+vim.opt.swapfile = false -- box test: changed line
 
 -- Change to file's directory when opening
 vim.opt.autochdir = true  -- Change working directory to current file's directory
